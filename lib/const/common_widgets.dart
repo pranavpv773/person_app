@@ -1,0 +1,385 @@
+import 'dart:developer';
+
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:person_app/const/responsive.dart';
+import 'package:person_app/const/sized_box.dart';
+
+import 'colors.dart';
+
+Widget text({
+  String? text,
+  double? size,
+  Color? color,
+  int? maxLines,
+  TextAlign? textAlign,
+  FontWeight? fontWeight,
+  String? fontFamily,
+  TextDecoration? decoration,
+  TextOverflow? overFlow,
+  double? wordSpacing,
+  double? letterSpacing,
+  TextDecorationStyle? decorationStyle,
+  Color? decorationColor,
+}) {
+  return Text(
+    text ?? '',
+    maxLines: maxLines,
+    textAlign: textAlign,
+    style: TextStyle(
+      fontSize: size,
+      color: color ?? AppColor.white,
+      fontWeight: fontWeight,
+      fontFamily: fontFamily ?? GoogleFonts.urbanist().fontFamily,
+      decoration: decoration,
+      decorationColor: decorationColor,
+      overflow: overFlow,
+      wordSpacing: wordSpacing,
+      letterSpacing: letterSpacing,
+      decorationStyle: decorationStyle,
+    ),
+  );
+}
+
+InkWell button({
+  double? height,
+  double? width,
+  Color? color,
+  BorderRadius? borderRadius,
+  String? name,
+  Function()? onTap,
+  double? fontSize,
+  Color? textColor = AppColor.white,
+  Color borderColor = AppColor.primaryColor,
+  bool isLoading = false,
+  bool isIcon = false,
+  String? image,
+  FontWeight? fontWeight,
+}) {
+  log(isLoading.toString());
+  return InkWell(
+    onTap: onTap,
+    child: Container(
+      height: height,
+      width: width ?? double.infinity,
+      decoration: BoxDecoration(
+        color: color ?? AppColor.primaryColor,
+        borderRadius: borderRadius ?? BorderRadius.circular(4),
+        border: Border.all(color: borderColor),
+      ),
+      child: Center(
+        child: isLoading
+            ? const CupertinoActivityIndicator(color: AppColor.white)
+            : isIcon
+            ? Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SvgPicture.string(image ?? ''),
+                  const SizeBoxV(10),
+                  text(
+                    text: name ?? 'Continue',
+                    size: fontSize,
+                    color: textColor,
+                    fontWeight: fontWeight,
+                    letterSpacing: 1,
+                  ),
+                ],
+              )
+            : text(
+                text: name ?? 'Continue',
+                size: fontSize,
+                color: textColor,
+                fontWeight: fontWeight,
+                letterSpacing: 1,
+              ),
+      ),
+    ),
+  );
+}
+
+CachedNetworkImage image({required String url, double? height, double? width, double radius = 0, Color? color}) {
+  return CachedNetworkImage(
+    imageUrl: url,
+    height: height,
+    width: width,
+    imageBuilder: (context, imageProvider) {
+      return Container(
+        height: height,
+        width: width,
+        decoration: BoxDecoration(
+          color: color,
+          borderRadius: BorderRadius.circular(radius),
+          image: DecorationImage(image: imageProvider, fit: BoxFit.cover),
+        ),
+      );
+    },
+    placeholder: (context, url) => Center(
+      child: SizedBox(
+        height: height,
+        width: width,
+        child: Center(child: CircularProgressIndicator(color: AppColor.blueColor)),
+      ),
+    ),
+    errorWidget: (context, url, error) {
+      return Image.asset('assets/images/no_image.png', fit: BoxFit.cover);
+    },
+  );
+}
+
+Widget buildCommonTextFormField({
+  bool expands = false,
+  Color borderColor = Colors.black12,
+  required Color bgColor,
+  required String hintText,
+  Color hintTextColor = AppColor.hintTextColor,
+  Widget? prefixIcon,
+  Color color = AppColor.black,
+  required TextInputType keyboardType,
+  required TextInputAction textInputAction,
+  String? Function(String?)? validator,
+  int? maxLength,
+  required TextEditingController? controller,
+  List<TextInputFormatter>? inputFormatters,
+  EdgeInsetsGeometry? contentPadding = const EdgeInsets.only(left: 30, top: 18, bottom: 18, right: 10),
+  bool obscureText = false,
+  Widget? suffixIcon,
+  void Function()? onTap,
+  bool enabled = true,
+  bool readOnly = false,
+  double radius = 8,
+  int? minLine,
+  int? maxLine,
+  FocusNode? focusNode,
+  bool isFromChat = false,
+  void Function(String)? onChanged,
+  void Function(String)? onFieldSubmitted,
+  required BuildContext context,
+  bool isFromPhoneText = false,
+}) {
+  return TextFormField(
+    inputFormatters: inputFormatters,
+    onChanged: onChanged,
+    onFieldSubmitted: onFieldSubmitted,
+    onTapOutside: (event) => FocusScope.of(context).unfocus(),
+    onTap: onTap,
+    style: TextStyle(fontFamily: GoogleFonts.urbanist().fontFamily, color: color, fontSize: 14),
+    expands: expands,
+    keyboardType: keyboardType,
+    obscureText: obscureText,
+    textInputAction: textInputAction,
+    enabled: enabled,
+    focusNode: focusNode,
+    decoration: InputDecoration(
+      prefixIcon: prefixIcon,
+      counterText: '',
+      contentPadding: contentPadding,
+      border: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(radius),
+        borderSide: isFromPhoneText ? BorderSide.none : BorderSide(color: borderColor),
+      ),
+      enabledBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(radius),
+        borderSide: isFromPhoneText ? BorderSide.none : BorderSide(color: borderColor),
+      ),
+      disabledBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(radius),
+        borderSide: isFromPhoneText ? BorderSide.none : BorderSide(color: borderColor),
+      ),
+      focusedBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(radius),
+        borderSide: isFromPhoneText ? BorderSide.none : const BorderSide(color: Color(0x26000000)),
+      ),
+      floatingLabelBehavior: FloatingLabelBehavior.never,
+      suffixIcon: suffixIcon,
+      fillColor: bgColor,
+      filled: true,
+      labelText: hintText,
+      labelStyle: TextStyle(color: hintTextColor, fontWeight: FontWeight.w300, fontSize: 15),
+    ),
+    validator: validator,
+    maxLength: maxLength,
+    controller: controller,
+    readOnly: readOnly,
+    minLines: minLine,
+    maxLines: maxLine,
+  );
+}
+
+Widget commonNetworkImage({
+  required String url,
+  required double height,
+  required double width,
+  double radius = 10,
+  bool isRound = false,
+}) {
+  return ClipRRect(
+    borderRadius: isRound ? BorderRadius.circular(height / 2) : BorderRadius.circular(radius),
+    child: Image.network(
+      url,
+      height: height,
+      width: width,
+      fit: BoxFit.cover,
+      errorBuilder: (context, error, stackTrace) {
+        return Container(height: height, width: width, color: Colors.grey, child: const Icon(Icons.error));
+      },
+    ),
+  );
+}
+
+CircleAvatar circleAvatharWidget({required String icon, Color? iconColor}) {
+  return CircleAvatar(
+    radius: 23,
+    backgroundColor: AppColor.white,
+    child: CircleAvatar(
+      radius: 22,
+      backgroundColor: AppColor.white,
+      child: assetImageWidget(
+        image: icon,
+        iconColor: iconColor,
+        width: Responsive.width * 5,
+        height: Responsive.height * 5,
+      ),
+    ),
+  );
+}
+
+Image assetImageWidget({required String image, double? height, double? width, Color? iconColor}) {
+  return Image.asset(
+    image,
+    color: iconColor,
+    width: width ?? Responsive.width * 4.5,
+    height: height ?? Responsive.height * 1,
+  );
+}
+
+InkWell buttonWithIcon({
+  double? height,
+  double? width,
+  Color? color,
+  BorderRadius? borderRadius,
+  String? name,
+  required String icon,
+  Function()? onTap,
+  double? fontSize,
+  Color? textColor = AppColor.white,
+  Color? borderColor = const Color(0xFF4B57B2),
+  bool isLoading = false,
+  FontWeight? fontWeight,
+}) {
+  return InkWell(
+    onTap: onTap,
+    child: Container(
+      height: height,
+      width: width ?? double.infinity,
+      decoration: BoxDecoration(
+        color: color ?? AppColor.primaryColor,
+        borderRadius: borderRadius ?? BorderRadius.circular(4),
+        border: Border.all(color: borderColor!, width: 1),
+      ),
+      child: Center(
+        child: isLoading
+            ? const CupertinoActivityIndicator(color: AppColor.white)
+            : Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    SvgPicture.string(icon),
+                    const SizeBoxV(10),
+                    text(
+                      text: name ?? 'Continue',
+                      size: fontSize,
+                      color: textColor,
+                      fontWeight: fontWeight,
+                      letterSpacing: 1,
+                    ),
+                  ],
+                ),
+              ),
+      ),
+    ),
+  );
+}
+
+bool _isToastShowing = false;
+
+void toast(BuildContext context, {String? title, int duration = 2, Color? backgroundColor}) {
+  if (_isToastShowing) return;
+
+  _isToastShowing = true;
+
+  final scaffold = ScaffoldMessenger.of(context);
+  final mediaQuery = MediaQuery.of(context);
+  final bool isKeyboardOpen = mediaQuery.viewInsets.bottom > 0.0;
+
+  scaffold
+      .showSnackBar(
+        SnackBar(
+          backgroundColor: backgroundColor,
+          duration: Duration(seconds: duration),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+          content: Container(
+            height: Responsive.height * 3,
+            width: Responsive.width * 90,
+            alignment: Alignment.center,
+            child: Text(
+              title ?? 'Something went wrong',
+              textAlign: TextAlign.center,
+              style: const TextStyle(color: Colors.white, fontSize: 14),
+            ),
+          ),
+          behavior: SnackBarBehavior.floating,
+          margin: EdgeInsets.only(bottom: isKeyboardOpen ? mediaQuery.viewInsets.bottom : 15.0, left: 8.0, right: 8.0),
+        ),
+      )
+      .closed
+      .then((reason) {
+        _isToastShowing = false;
+      });
+}
+
+class CachedImage extends StatelessWidget {
+  final String imageUrl;
+  final double height;
+  final double width;
+  final BorderRadiusGeometry? borderRadius;
+  const CachedImage({super.key, required this.imageUrl, this.height = 0, this.width = 0, this.borderRadius});
+
+  @override
+  Widget build(BuildContext context) {
+    return CachedNetworkImage(
+      imageUrl: imageUrl,
+      imageBuilder: (context, imageProvider) => Container(
+        height: height,
+        width: width,
+        decoration: BoxDecoration(
+          borderRadius: borderRadius,
+          image: DecorationImage(image: imageProvider, fit: BoxFit.cover),
+        ),
+      ),
+      placeholder: (context, url) => Center(
+        child: SizedBox(
+          height: height > Responsive.height * 50 ? 35 : height,
+          width: width > Responsive.height * 50 ? 35 : width,
+          child: Center(child: CircularProgressIndicator(color: AppColor.primaryColor)),
+        ),
+      ),
+      errorWidget: (context, url, error) {
+        return Container(
+          height: height,
+          width: width,
+          decoration: BoxDecoration(borderRadius: borderRadius),
+          child: Image.network(
+            'https://t4.ftcdn.net/jpg/04/95/28/65/240_F_495286577_rpsT2Shmr6g81hOhGXALhxWOfx1vOQBa.jpg',
+            height: height,
+            width: width,
+          ),
+        );
+      },
+    );
+  }
+}
