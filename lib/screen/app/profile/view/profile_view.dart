@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:person_app/const/app_bar_widget.dart';
 import 'package:person_app/const/colors.dart';
 import 'package:person_app/const/common_widgets.dart';
 import 'package:person_app/const/responsive.dart';
@@ -9,14 +10,39 @@ import 'package:person_app/const/svg_images.dart';
 import 'package:person_app/screen/app/profile/view/widgets/profile_card.dart';
 import 'package:person_app/screen/app/profile/view_model/profile_notifier.dart';
 import 'package:provider/provider.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
-class ProfileView extends StatelessWidget {
+class ProfileView extends StatefulWidget {
   const ProfileView({super.key});
 
   @override
+  State<ProfileView> createState() => _ProfileViewState();
+}
+
+class _ProfileViewState extends State<ProfileView> {
+  @override
+  void initState() {
+    context.read<ProfileNotifier>().getUsersData(context: context);
+    super.initState();
+  }
+
+  final GlobalKey<ScaffoldState> profilekey = GlobalKey();
+
+  @override
   Widget build(BuildContext context) {
+    double width = MediaQuery.of(context).size.width;
+
+    // Determine device type based on breakpoints
+    bool isMobile = width < 600;
+    bool isTablet = width >= 600 && width < 1024;
+    // bool isDesktop = width >= 1024;
     return Scaffold(
+      key: profilekey,
       backgroundColor: AppColor.white,
+      appBar: PreferredSize(
+        preferredSize: Size(width, 60),
+        child: AppBarWidget(isMobile: isMobile, isTablet: isTablet, nKey: profilekey),
+      ),
       body: Padding(
         padding: EdgeInsets.all(16.0),
         child: SingleChildScrollView(
@@ -57,14 +83,17 @@ class ProfileView extends StatelessWidget {
                     crossAxisSpacing: 10,
                     children: List.generate(profileNotifier.usersList.length, (index) {
                       final item = profileNotifier.usersList[index];
-                      return ProfileCard(
-                        id: '',
-                        imageUrl:
-                            'https://ik.imagekit.io/eatplek/marketing/banners/0d23acbc534e0456e81b0d3499a4086a_4-Db6kdEQD.png',
-                        name: item.name ?? '',
-                        company: item.company?.name ?? '',
-                        city: item.address?.city ?? '',
-                        email: item.email ?? '',
+                      return Skeletonizer(
+                        enabled: profileNotifier.isUserDataLoading,
+                        child: ProfileCard(
+                          id: '',
+                          imageUrl:
+                              'https://ik.imagekit.io/eatplek/marketing/banners/0d23acbc534e0456e81b0d3499a4086a_4-Db6kdEQD.png',
+                          name: item.name ?? '',
+                          company: item.company?.name ?? '',
+                          city: item.address?.city ?? '',
+                          email: item.email ?? '',
+                        ),
                       );
                     }),
                   );

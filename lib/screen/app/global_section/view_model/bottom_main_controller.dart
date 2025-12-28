@@ -19,9 +19,16 @@ class GlobalSectionNotifier extends ChangeNotifier {
     notifyListeners();
     switch (index) {
       case 0:
-        GoRouter.of(context).go(Routes.homeView);
+        // context.go(Routes.homeView,extra: );
+        Routes.router.routerDelegate.navigatorKey.currentContext?.go(Routes.homeView);
+      // Routes.router.routeInformationProvider.go(Routes.homeView);
+      // GoRouter.of(context).go(Routes.homeView);
       case 1:
-        GoRouter.of(context).go(Routes.users);
+        Routes.router.routerDelegate.navigatorKey.currentContext?.go(Routes.users);
+
+      // Routes.router.routeInformationProvider.go(Routes.users);
+
+      // GoRouter.of(context).go(Routes.users);
       case 2:
         GoRouter.of(context).go('/c');
     }

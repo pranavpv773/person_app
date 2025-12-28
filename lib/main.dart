@@ -24,7 +24,10 @@ class MyApp extends StatelessWidget {
               Responsive().init(constraints, orientation);
               return MaterialApp.router(
                 debugShowCheckedModeBanner: false,
-                routerConfig: Routes.router,
+                // routerConfig: Routes.router,
+                routeInformationProvider: Routes.router.routeInformationProvider,
+                routeInformationParser: Routes.router.routeInformationParser,
+                routerDelegate: Routes.router.routerDelegate,
                 theme: ThemeData(scaffoldBackgroundColor: AppColor.white, fontFamily: GoogleFonts.asul().fontFamily),
               );
             },

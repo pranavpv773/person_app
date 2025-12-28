@@ -13,11 +13,17 @@ class SideMenu extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    double width = MediaQuery.of(context).size.width;
+
+    // Determine device type based on breakpoints
+    // bool isMobile = width < 600;
+    bool isTablet = width >= 600 && width < 1024;
+    // bool isDesktop = width >= 1024;
     return Drawer(
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.only(topRight: Radius.circular(0), bottomRight: Radius.circular(0)),
       ),
-      backgroundColor: AppColor.primaryColor.withOpacity(.1),
+      backgroundColor: isTablet ? AppColor.white : AppColor.primaryColor.withOpacity(.1),
       child: Consumer<GlobalSectionNotifier>(
         builder: (context, notifier, child) {
           return ListView(

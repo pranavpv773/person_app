@@ -39,4 +39,17 @@ class Routes {
   );
 
   static GoRouter get router => _router;
+
+  void pushReplacement(String location, {Object? extra}) {
+    _router.routeInformationParser
+        .parseRouteInformationWithDependencies(
+          RouteInformation(location: location, state: extra),
+          // TODO(chunhtai): avoid accessing the context directly through global key.
+          // https://github.com/flutter/flutter/issues/99112
+          _router.routerDelegate.navigatorKey.currentContext!,
+        )
+        .then<void>((RouteMatchList matchList) {
+          _router.routerDelegate.setNewRoutePath(matchList);
+        });
+  }
 }
