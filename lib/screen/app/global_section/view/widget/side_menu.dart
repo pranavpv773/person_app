@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:person_app/const/app_images.dart';
 import 'package:person_app/const/colors.dart';
 import 'package:person_app/const/common_widgets.dart';
-import 'package:person_app/const/svg_images.dart';
 import 'package:person_app/screen/app/global_section/view_model/bottom_main_controller.dart';
 import 'package:provider/provider.dart';
 
@@ -48,23 +46,23 @@ class SideMenu extends StatelessWidget {
               DrawerListTile(
                 isSelected: notifier.selectedIndex == 0,
                 title: "Home",
-                svgSrc: notifier.selectedIndex == 0 ? SvgCodes.bottomSelectedHomeSvg : SvgCodes.bottomHomeSvg,
+                svgSrc: Icons.dashboard,
                 press: () {
                   notifier.onWebItemTapped(0, context);
                 },
               ),
               DrawerListTile(
                 isSelected: notifier.selectedIndex == 1,
-                title: "Users",
-                svgSrc: notifier.selectedIndex == 1 ? SvgCodes.bottomSelectedUserSvg : SvgCodes.bottomUserSvg,
+                title: "Profile",
+                svgSrc: Icons.group_add_rounded,
                 press: () {
                   notifier.onWebItemTapped(1, context);
                 },
               ),
               DrawerListTile(
                 isSelected: notifier.selectedIndex == 2,
-                title: "More",
-                svgSrc: SvgCodes.bottomMoreSvg,
+                title: "Add Person",
+                svgSrc: Icons.groups_3,
                 press: () {
                   notifier.onWebItemTapped(2, context);
                 },
@@ -88,7 +86,8 @@ class DrawerListTile extends StatelessWidget {
     required this.isSelected,
   });
 
-  final String title, svgSrc;
+  final String title;
+  final IconData svgSrc;
   final VoidCallback press;
 
   @override
@@ -96,7 +95,7 @@ class DrawerListTile extends StatelessWidget {
     return ListTile(
       onTap: press,
       horizontalTitleGap: 10.0,
-      leading: SvgPicture.string(svgSrc, color: isSelected ? AppColor.primaryColor : Colors.black, height: 16),
+      leading: Icon(svgSrc, color: isSelected ? AppColor.primaryColor : Colors.black, size: 16),
       title: Text(title, style: TextStyle(color: isSelected ? AppColor.primaryColor : Colors.black)),
     );
   }

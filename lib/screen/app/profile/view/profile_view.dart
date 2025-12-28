@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -7,6 +8,7 @@ import 'package:person_app/const/common_widgets.dart';
 import 'package:person_app/const/responsive.dart';
 import 'package:person_app/const/sized_box.dart';
 import 'package:person_app/const/svg_images.dart';
+import 'package:person_app/screen/app/global_section/view/widget/side_menu.dart';
 import 'package:person_app/screen/app/profile/view/widgets/profile_card.dart';
 import 'package:person_app/screen/app/profile/view_model/profile_notifier.dart';
 import 'package:provider/provider.dart';
@@ -39,9 +41,10 @@ class _ProfileViewState extends State<ProfileView> {
     return Scaffold(
       key: profilekey,
       backgroundColor: AppColor.white,
+      drawer: isTablet ? SideMenu() : null,
       appBar: PreferredSize(
         preferredSize: Size(width, 60),
-        child: AppBarWidget(isMobile: isMobile, isTablet: isTablet, nKey: profilekey),
+        child: AppBarWidget(isMobile: isMobile, isTablet: isTablet, nkey: profilekey),
       ),
       body: Padding(
         padding: EdgeInsets.all(16.0),
@@ -49,20 +52,29 @@ class _ProfileViewState extends State<ProfileView> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              buildCommonTextFormField(
-                bgColor: Colors.transparent,
-                hintText: "Search Users",
-                borderColor: AppColor.black.withOpacity(.1),
-                keyboardType: TextInputType.text,
-                textInputAction: TextInputAction.search,
-                controller: TextEditingController(),
-                context: context,
-                contentPadding: EdgeInsets.symmetric(horizontal: 0),
-                onChanged: (p0) {},
-                prefixIcon: Padding(
-                  padding: EdgeInsets.all(16.0),
-                  child: SvgPicture.string(SvgCodes.searchSvg, width: 20, height: 20),
-                ),
+              Consumer<ProfileNotifier>(
+                builder: (context, profileNotifier, child) {
+                  return buildCommonTextFormField(
+                    bgColor: Colors.transparent,
+                    hintText: "Search Users",
+                    borderColor: AppColor.black.withOpacity(.1),
+                    keyboardType: TextInputType.text,
+                    textInputAction: TextInputAction.search,
+                    controller: profileNotifier.searchController,
+                    context: context,
+                    contentPadding: EdgeInsets.symmetric(horizontal: 0),
+                    onChanged: (val) {
+                      print("${val}ong");
+                      // if (val.trim().length >= 3) {
+                      profileNotifier.searchUsers();
+                      // }
+                    },
+                    prefixIcon: Padding(
+                      padding: EdgeInsets.all(16.0),
+                      child: SvgPicture.string(SvgCodes.searchSvg, width: 20, height: 20),
+                    ),
+                  );
+                },
               ),
               SizeBoxH(Responsive.height * 2),
               text(
@@ -75,28 +87,55 @@ class _ProfileViewState extends State<ProfileView> {
 
               Consumer<ProfileNotifier>(
                 builder: (context, profileNotifier, child) {
-                  return GridView.extent(
-                    physics: NeverScrollableScrollPhysics(),
-                    shrinkWrap: true,
-                    maxCrossAxisExtent: 300,
-                    mainAxisSpacing: 10,
-                    crossAxisSpacing: 10,
-                    children: List.generate(profileNotifier.usersList.length, (index) {
-                      final item = profileNotifier.usersList[index];
-                      return Skeletonizer(
-                        enabled: profileNotifier.isUserDataLoading,
-                        child: ProfileCard(
-                          id: '',
-                          imageUrl:
-                              'https://ik.imagekit.io/eatplek/marketing/banners/0d23acbc534e0456e81b0d3499a4086a_4-Db6kdEQD.png',
-                          name: item.name ?? '',
-                          company: item.company?.name ?? '',
-                          city: item.address?.city ?? '',
-                          email: item.email ?? '',
-                        ),
-                      );
-                    }),
-                  );
+                  return profileNotifier.isSearchEnabled
+                      ? GridView.extent(
+                          physics: NeverScrollableScrollPhysics(),
+                          shrinkWrap: true,
+                          maxCrossAxisExtent: 300,
+                          childAspectRatio: kIsWeb ? 1 : Responsive.height * .099,
+                          mainAxisSpacing: 10,
+                          crossAxisSpacing: 10,
+                          children: List.generate(profileNotifier.displayUsers.length, (index) {
+                            final item = profileNotifier.displayUsers[index];
+                            return Skeletonizer(
+                              enabled: profileNotifier.isUserDataLoading,
+                              child: ProfileCard(
+                                user: item,
+                                id: item.id.toString(),
+                                imageUrl:
+                                    'https://ik.imagekit.io/eatplek/marketing/banners/0d23acbc534e0456e81b0d3499a4086a_4-Db6kdEQD.png',
+                                name: item.name ?? '',
+                                company: item.company?.name ?? '',
+                                city: item.address?.city ?? '',
+                                email: item.email ?? '',
+                              ),
+                            );
+                          }),
+                        )
+                      : GridView.extent(
+                          physics: NeverScrollableScrollPhysics(),
+                          shrinkWrap: true,
+                          maxCrossAxisExtent: 300,
+                          childAspectRatio: kIsWeb ? 1 : Responsive.height * .099,
+                          mainAxisSpacing: 10,
+                          crossAxisSpacing: 10,
+                          children: List.generate(profileNotifier.usersList.length, (index) {
+                            final item = profileNotifier.usersList[index];
+                            return Skeletonizer(
+                              enabled: profileNotifier.isUserDataLoading,
+                              child: ProfileCard(
+                                user: item,
+                                id: item.id.toString(),
+                                imageUrl:
+                                    'https://ik.imagekit.io/eatplek/marketing/banners/0d23acbc534e0456e81b0d3499a4086a_4-Db6kdEQD.png',
+                                name: item.name ?? '',
+                                company: item.company?.name ?? '',
+                                city: item.address?.city ?? '',
+                                email: item.email ?? '',
+                              ),
+                            );
+                          }),
+                        );
                 },
               ),
               SizeBoxH(100),

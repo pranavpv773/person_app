@@ -2,13 +2,19 @@
 
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:person_app/const/colors.dart';
 import 'package:person_app/const/common_widgets.dart';
 import 'package:person_app/const/responsive.dart';
+import 'package:person_app/const/routes.dart';
 import 'package:person_app/const/sized_box.dart';
+import 'package:person_app/screen/app/profile/model/profile_model.dart';
+import 'package:person_app/screen/app/profile_detail/view_model/profile_details_notifier.dart';
+import 'package:provider/provider.dart';
 
 class ProfileTileCard extends StatelessWidget {
+  final UserModel user;
   final String id;
   String imageUrl;
   final String name;
@@ -18,6 +24,7 @@ class ProfileTileCard extends StatelessWidget {
 
   ProfileTileCard({
     super.key,
+    required this.user,
     required this.id,
     required this.imageUrl,
     required this.name,
@@ -30,7 +37,10 @@ class ProfileTileCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return ZoomIn(
       child: GestureDetector(
-        onTap: () {},
+        onTap: () {
+          context.read<ProfileDetailsNotifier>().setUserModel(user);
+          context.go("${Routes.profileDetails}/$id");
+        },
         child: Container(
           width: Responsive.width * 100,
           padding: const EdgeInsets.all(16),
@@ -102,6 +112,8 @@ class ProfileTileCard extends StatelessWidget {
 }
 
 class ProfileCard extends StatelessWidget {
+  final UserModel user;
+
   final String id;
   String imageUrl;
   final String name;
@@ -111,6 +123,7 @@ class ProfileCard extends StatelessWidget {
 
   ProfileCard({
     super.key,
+    required this.user,
     required this.id,
     required this.imageUrl,
     required this.name,
@@ -123,7 +136,10 @@ class ProfileCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return ZoomIn(
       child: GestureDetector(
-        onTap: () {},
+        onTap: () {
+          context.read<ProfileDetailsNotifier>().setUserModel(user);
+          context.go("${Routes.profileDetails}/$id");
+        },
         child: Container(
           width: Responsive.width * 40,
           // padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 9),

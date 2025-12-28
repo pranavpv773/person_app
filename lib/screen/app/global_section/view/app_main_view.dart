@@ -1,6 +1,6 @@
 // ignore_for_file: deprecated_member_use
-
 import 'package:animate_do/animate_do.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:person_app/const/colors.dart';
@@ -34,7 +34,7 @@ class AppMainView extends StatelessWidget {
                 return Container(
                   width: Responsive.width * 100,
                   padding: EdgeInsets.symmetric(horizontal: Responsive.width * 5),
-                  height: Responsive.height * 8,
+                  height: kIsWeb ? Responsive.height * 10 : Responsive.height * 8,
                   decoration: BoxDecoration(
                     // border: Border.all(color: Colors.black45),
                     borderRadius: BorderRadius.circular(10),
@@ -58,11 +58,15 @@ class AppMainView extends StatelessWidget {
                           highlightColor: AppColor.transparent,
                           hoverColor: AppColor.transparent,
                           focusColor: AppColor.transparent,
-                          onPressed: () {
-                            print('object');
-                            notifier.onItemTapped(index: 0);
-                            print('object1');
-                          },
+                          onPressed: kIsWeb
+                              ? () {
+                                  notifier.onWebItemTapped(0, context);
+                                }
+                              : () {
+                                  print('object');
+                                  notifier.onItemTapped(index: 0);
+                                  print('object1');
+                                },
                           icon: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
@@ -92,9 +96,13 @@ class AppMainView extends StatelessWidget {
                           highlightColor: AppColor.transparent,
                           hoverColor: AppColor.transparent,
                           focusColor: AppColor.transparent,
-                          onPressed: () async {
-                            notifier.onItemTapped(index: 1);
-                          },
+                          onPressed: kIsWeb
+                              ? () {
+                                  notifier.onWebItemTapped(1, context);
+                                }
+                              : () async {
+                                  notifier.onItemTapped(index: 1);
+                                },
                           icon: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
@@ -108,7 +116,7 @@ class AppMainView extends StatelessWidget {
                                   ? ZoomIn(
                                       child: text(
                                         size: 12,
-                                        text: 'Users',
+                                        text: 'Profile',
                                         color: notifier.selectedIndex == 1 ? AppColor.primaryColor : AppColor.black,
                                         fontFamily: GoogleFonts.urbanist(fontWeight: FontWeight.w500).fontFamily,
                                       ),
@@ -125,9 +133,13 @@ class AppMainView extends StatelessWidget {
                           highlightColor: AppColor.transparent,
                           hoverColor: AppColor.transparent,
                           focusColor: AppColor.transparent,
-                          onPressed: () {
-                            notifier.onItemTapped(index: 2);
-                          },
+                          onPressed: kIsWeb
+                              ? () {
+                                  notifier.onWebItemTapped(2, context);
+                                }
+                              : () {
+                                  notifier.onItemTapped(index: 2);
+                                },
                           icon: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
@@ -158,34 +170,27 @@ class AppMainView extends StatelessWidget {
             )
           : null,
       backgroundColor: Colors.white,
-      body: isMobile
-          ? child
-          : Consumer<GlobalSectionNotifier>(
-              builder: (context, notifier, child) {
-                return Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    if (!isMobile && !isTablet)
-                      const Expanded(
-                        flex: 1,
-                        // and it takes 1/6 part of the screen
-                        child: SideMenu(),
-                      ),
+      body: Consumer<GlobalSectionNotifier>(
+        builder: (context, notifier, child) {
+          return Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              if (!isMobile && !isTablet) const Expanded(flex: 1, child: SideMenu()),
 
-                    Expanded(
-                      flex: 5,
-                      child: notifier.selectedIndex == 0
-                          ? notifier.bottomBarItems[0]
-                          : notifier.selectedIndex == 1
-                          ? notifier.bottomBarItems[1]
-                          : notifier.selectedIndex == 2
-                          ? notifier.bottomBarItems[2]
-                          : notifier.bottomBarItems[3],
-                    ),
-                  ],
-                );
-              },
-            ),
+              Expanded(
+                flex: 5,
+                child: notifier.selectedIndex == 0
+                    ? notifier.bottomBarItems[0]
+                    : notifier.selectedIndex == 1
+                    ? notifier.bottomBarItems[1]
+                    : notifier.selectedIndex == 2
+                    ? notifier.bottomBarItems[2]
+                    : notifier.bottomBarItems[3],
+              ),
+            ],
+          );
+        },
+      ),
     );
   }
 }

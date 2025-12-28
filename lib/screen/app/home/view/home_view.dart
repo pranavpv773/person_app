@@ -42,7 +42,7 @@ class _HomeViewState extends State<HomeView> {
       drawer: isTablet ? SideMenu() : null,
       appBar: PreferredSize(
         preferredSize: Size(width, 60),
-        child: AppBarWidget(isMobile: isMobile, isTablet: isTablet, nKey: _key),
+        child: AppBarWidget(isMobile: isMobile, isTablet: isTablet, nkey: _key),
       ),
       backgroundColor: AppColor.white,
       body: Padding(
@@ -53,14 +53,16 @@ class _HomeViewState extends State<HomeView> {
             children: [
               buildCommonTextFormField(
                 bgColor: Colors.transparent,
-                hintText: "Search Users",
+                hintText: "Search Profile",
                 borderColor: AppColor.black.withOpacity(.1),
                 keyboardType: TextInputType.text,
                 textInputAction: TextInputAction.search,
                 controller: TextEditingController(),
                 context: context,
                 contentPadding: EdgeInsets.symmetric(horizontal: 0),
-                onChanged: (p0) {},
+                onChanged: (query) {
+                  context.read<HomeNotifier>().searchUsers(query);
+                },
                 prefixIcon: Padding(
                   padding: EdgeInsets.all(16.0),
                   child: SvgPicture.string(SvgCodes.searchSvg, width: 20, height: 20),
@@ -80,11 +82,12 @@ class _HomeViewState extends State<HomeView> {
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),
                     itemBuilder: (context, index) {
-                      final item = homeNotifier.usersList[index];
+                      final item = homeNotifier.displayUsers[index];
                       return Skeletonizer(
                         enabled: homeNotifier.isUserDataLoading == true,
                         child: ProfileTileCard(
-                          id: '',
+                          user: item,
+                          id: item.id.toString(),
                           imageUrl:
                               'https://ik.imagekit.io/eatplek/marketing/banners/0d23acbc534e0456e81b0d3499a4086a_4-Db6kdEQD.png',
                           name: item.name ?? '',
@@ -95,7 +98,7 @@ class _HomeViewState extends State<HomeView> {
                       );
                     },
                     separatorBuilder: (context, index) => const SizeBoxH(16),
-                    itemCount: homeNotifier.usersList.length > 5 ? 5 : homeNotifier.usersList.length,
+                    itemCount: homeNotifier.displayUsers.length,
                   );
                 },
               ),

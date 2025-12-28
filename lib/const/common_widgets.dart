@@ -209,27 +209,6 @@ Widget buildCommonTextFormField({
   );
 }
 
-Widget commonNetworkImage({
-  required String url,
-  required double height,
-  required double width,
-  double radius = 10,
-  bool isRound = false,
-}) {
-  return ClipRRect(
-    borderRadius: isRound ? BorderRadius.circular(height / 2) : BorderRadius.circular(radius),
-    child: Image.network(
-      url,
-      height: height,
-      width: width,
-      fit: BoxFit.cover,
-      errorBuilder: (context, error, stackTrace) {
-        return Container(height: height, width: width, color: Colors.grey, child: const Icon(Icons.error));
-      },
-    ),
-  );
-}
-
 Image assetImageWidget({required String image, double? height, double? width, Color? iconColor}) {
   return Image.asset(
     image,
@@ -274,46 +253,4 @@ void toast(BuildContext context, {String? title, int duration = 2, Color? backgr
       .then((reason) {
         _isToastShowing = false;
       });
-}
-
-class CachedImage extends StatelessWidget {
-  final String imageUrl;
-  final double height;
-  final double width;
-  final BorderRadiusGeometry? borderRadius;
-  const CachedImage({super.key, required this.imageUrl, this.height = 0, this.width = 0, this.borderRadius});
-
-  @override
-  Widget build(BuildContext context) {
-    return CachedNetworkImage(
-      imageUrl: imageUrl,
-      imageBuilder: (context, imageProvider) => Container(
-        height: height,
-        width: width,
-        decoration: BoxDecoration(
-          borderRadius: borderRadius,
-          image: DecorationImage(image: imageProvider, fit: BoxFit.cover),
-        ),
-      ),
-      placeholder: (context, url) => Center(
-        child: SizedBox(
-          height: height > Responsive.height * 50 ? 35 : height,
-          width: width > Responsive.height * 50 ? 35 : width,
-          child: Center(child: CircularProgressIndicator(color: AppColor.primaryColor)),
-        ),
-      ),
-      errorWidget: (context, url, error) {
-        return Container(
-          height: height,
-          width: width,
-          decoration: BoxDecoration(borderRadius: borderRadius),
-          child: Image.network(
-            'https://t4.ftcdn.net/jpg/04/95/28/65/240_F_495286577_rpsT2Shmr6g81hOhGXALhxWOfx1vOQBa.jpg',
-            height: height,
-            width: width,
-          ),
-        );
-      },
-    );
-  }
 }

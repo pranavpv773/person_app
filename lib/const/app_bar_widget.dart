@@ -7,16 +7,11 @@ import 'package:person_app/const/common_widgets.dart';
 import 'package:person_app/const/sized_box.dart';
 
 class AppBarWidget extends StatelessWidget {
-  const AppBarWidget({
-    super.key,
-    required this.isMobile,
-    required this.isTablet,
-    required GlobalKey<ScaffoldState> nKey,
-  }) : _key = nKey;
+  const AppBarWidget({super.key, required this.isMobile, required this.isTablet, required this.nkey});
 
   final bool isMobile;
   final bool isTablet;
-  final GlobalKey<ScaffoldState> _key;
+  final GlobalKey<ScaffoldState> nkey;
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +28,8 @@ class AppBarWidget extends StatelessWidget {
               padding: const EdgeInsets.all(8.0),
               child: GestureDetector(
                 onTap: () {
-                  _key.currentState!.openDrawer();
+                  print("object");
+                  nkey.currentState!.openDrawer();
                 },
                 child: assetImageWidget(image: AppImages.logo),
               ),

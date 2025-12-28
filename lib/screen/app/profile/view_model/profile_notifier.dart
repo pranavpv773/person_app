@@ -44,15 +44,34 @@ class ProfileNotifier extends ChangeNotifier {
     }
   }
 
-  Future fetchUsers() async {
-    final response = await http.get(Uri.parse('https://jsonplaceholder.typicode.com/users'));
+  /* Search Functionality */
+  TextEditingController searchController = TextEditingController();
 
-    if (response.statusCode == 200) {
-      List<dynamic> body = jsonDecode(response.body);
-      print("45656 body ${response.body}");
-      usersList = body.map((dynamic item) => UserModel.fromJson(item)).toList();
+  bool isSearchEnabled = false;
+
+  List<UserModel> displayUsers = [];
+
+  // Call this when user types in search bar
+  void searchUsers() {
+    print("object 1");
+    if (searchController.text.isEmpty) {
+      print("object");
+      isSearchEnabled = false;
+      displayUsers.clear();
+      displayUsers = usersList;
+      notifyListeners();
     } else {
-      throw "External API Error: ${response.statusCode}";
+      isSearchEnabled = true;
+      notifyListeners();
+      displayUsers = usersList.where((user) {
+        final searchLower = searchController.text.trim().toLowerCase();
+
+        // Match against Name, Username, or Company Name
+        return user.name?.toLowerCase().contains(searchLower) == true ||
+            user.username?.toLowerCase().contains(searchLower) == true ||
+            user.company?.name?.toLowerCase().contains(searchLower) == true;
+      }).toList();
     }
+    notifyListeners();
   }
 }
