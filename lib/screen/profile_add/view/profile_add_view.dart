@@ -22,8 +22,6 @@ class ProfileAddView extends StatefulWidget {
 }
 
 class _ProfileAddViewState extends State<ProfileAddView> {
-  final GlobalKey<ScaffoldState> _key = GlobalKey();
-
   AddProfileNotifier? controller;
 
   @override
@@ -31,6 +29,8 @@ class _ProfileAddViewState extends State<ProfileAddView> {
     controller = context.read<AddProfileNotifier>();
     super.initState();
   }
+
+  final GlobalKey<ScaffoldState> profilekey = GlobalKey();
 
   @override
   Widget build(BuildContext context) {
@@ -41,11 +41,12 @@ class _ProfileAddViewState extends State<ProfileAddView> {
     bool isTablet = width >= 600 && width < 1024;
     // bool isDesktop = width >= 1024;
     return Scaffold(
+      key: profilekey,
       drawer: isTablet ? SideMenu() : null,
       backgroundColor: AppColor.white,
       appBar: PreferredSize(
         preferredSize: Size(width, 60),
-        child: AppBarWidget(isMobile: isMobile, isTablet: isTablet, nkey: _key),
+        child: AppBarWidget(isMobile: isMobile, isTablet: isTablet, nkey: profilekey),
       ),
       body: SingleChildScrollView(
         child: Padding(
