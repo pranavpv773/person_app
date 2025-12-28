@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "202996347888",
+    "project_id": "userhub-e1b6e",
+    "storage_bucket": "userhub-e1b6e.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:202996347888:android:7e9ecc23232a54b1332335",
+        "android_client_info": {
+          "package_name": "com.example.person_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBZT1B2FqKVnRP461ZqDN0pGv9vcde7wAs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

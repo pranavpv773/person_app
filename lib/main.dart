@@ -1,12 +1,15 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:person_app/const/colors.dart';
 import 'package:person_app/const/providers.dart';
 import 'package:person_app/const/responsive.dart';
 import 'package:person_app/const/routes.dart';
+import 'package:person_app/firebase_options.dart';
 import 'package:provider/provider.dart';
 
-void main() {
+Future<void> main() async {
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   runApp(const MyApp());
 }
 
