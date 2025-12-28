@@ -34,7 +34,7 @@ Widget text({
       fontSize: size,
       color: color ?? AppColor.white,
       fontWeight: fontWeight,
-      fontFamily: fontFamily ?? GoogleFonts.urbanist().fontFamily,
+      fontFamily: fontFamily ?? GoogleFonts.asul().fontFamily,
       decoration: decoration,
       decorationColor: decorationColor,
       overflow: overFlow,
@@ -230,78 +230,12 @@ Widget commonNetworkImage({
   );
 }
 
-CircleAvatar circleAvatharWidget({required String icon, Color? iconColor}) {
-  return CircleAvatar(
-    radius: 23,
-    backgroundColor: AppColor.white,
-    child: CircleAvatar(
-      radius: 22,
-      backgroundColor: AppColor.white,
-      child: assetImageWidget(
-        image: icon,
-        iconColor: iconColor,
-        width: Responsive.width * 5,
-        height: Responsive.height * 5,
-      ),
-    ),
-  );
-}
-
 Image assetImageWidget({required String image, double? height, double? width, Color? iconColor}) {
   return Image.asset(
     image,
     color: iconColor,
     width: width ?? Responsive.width * 4.5,
     height: height ?? Responsive.height * 1,
-  );
-}
-
-InkWell buttonWithIcon({
-  double? height,
-  double? width,
-  Color? color,
-  BorderRadius? borderRadius,
-  String? name,
-  required String icon,
-  Function()? onTap,
-  double? fontSize,
-  Color? textColor = AppColor.white,
-  Color? borderColor = const Color(0xFF4B57B2),
-  bool isLoading = false,
-  FontWeight? fontWeight,
-}) {
-  return InkWell(
-    onTap: onTap,
-    child: Container(
-      height: height,
-      width: width ?? double.infinity,
-      decoration: BoxDecoration(
-        color: color ?? AppColor.primaryColor,
-        borderRadius: borderRadius ?? BorderRadius.circular(4),
-        border: Border.all(color: borderColor!, width: 1),
-      ),
-      child: Center(
-        child: isLoading
-            ? const CupertinoActivityIndicator(color: AppColor.white)
-            : Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    SvgPicture.string(icon),
-                    const SizeBoxV(10),
-                    text(
-                      text: name ?? 'Continue',
-                      size: fontSize,
-                      color: textColor,
-                      fontWeight: fontWeight,
-                      letterSpacing: 1,
-                    ),
-                  ],
-                ),
-              ),
-      ),
-    ),
   );
 }
 

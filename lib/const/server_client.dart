@@ -10,11 +10,7 @@ class ServerClient {
   /* Get Method */
 
   static Future<List> get(String url, {BuildContext? context}) async {
-    Map<String, String> headers = {
-      "Content-Type": "application/json",
-      "Accept": "application/json",
-      "country": "india",
-    };
+    Map<String, String> headers = {"Content-Type": "application/json", "Accept": "application/json"};
 
     try {
       var response = await http.get(Uri.parse(url), headers: headers).timeout(const Duration(seconds: _timeout));

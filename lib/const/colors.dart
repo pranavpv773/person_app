@@ -7,8 +7,8 @@ class AppColor {
   static const Color black = Colors.black;
   static const Color black40 = Color(0xff999999);
   static const Color green = Colors.green;
-  static const Color bluishGrey = Color(0xFF9DB2CE);
-  static const Color primaryColor = Color(0xff2773FF);
+  static const Color bluishGrey = Color.fromARGB(227, 195, 212, 234);
+  static const Color primaryColor = Color(0xff5156BE);
   static const Color labelTextColor = Color(0xff9796A1);
   static const Color greyColor = Color(0xFF999999);
   static const Color backgroundColor = Color(0xFFfefeff);
