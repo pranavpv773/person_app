@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:person_app/const/colors.dart';
 import 'package:person_app/const/common_widgets.dart';
 import 'package:person_app/screen/profile/model/profile_model.dart';
+import 'package:person_app/screen/profile/view_model/profile_notifier.dart';
+import 'package:provider/provider.dart';
 
 class AddProfileNotifier extends ChangeNotifier {
   // Controllers
@@ -59,15 +61,52 @@ class AddProfileNotifier extends ChangeNotifier {
       toast(context, title: 'Company Name is required!', backgroundColor: AppColor.red);
       return;
     }
+    DateTime now = DateTime.now();
+
+    // Convert to integer (milliseconds since epoch)
+    int milliseconds = now.millisecondsSinceEpoch;
+
+    // Convert to integer (microseconds since epoch)
+    int microseconds = now.microsecondsSinceEpoch;
+    final user = UserModel(
+      address: Address(
+        city: cityController.text,
+        geo: Geo(lat: "13.0843", lng: '80.2705'),
+        street: streetController.text,
+        suite: suiteController.text,
+        zipcode: zipCodeController.text,
+      ),
+      company: Company(bs: '--', catchPhrase: '--', name: companyNameController.text),
+      email: emailController.text,
+      id: microseconds + milliseconds,
+      name: nameController.text,
+      phone: phoneController.text,
+      username: userNameController.text,
+      website: websiteController.text,
+    );
+    context.read<ProfileNotifier>().addToList(user, context).then((value) => clearVariablesFn());
   }
 
+  void clearVariablesFn() {
+    nameController.clear();
+    userNameController.clear();
+    emailController.clear();
+    phoneController.clear();
+    suiteController.clear();
+    cityController.clear();
+    streetController.clear();
+    zipCodeController.clear();
+    websiteController.clear();
+    companyNameController.clear();
+  }
+
+  /* UPDATE */
   bool isEdit = false;
   void setAdd() {
     isEdit = false;
     notifyListeners();
   }
 
-  /* UPDATE */
   void setProfileUpdate(UserModel user) {
     isEdit = true;
     nameController = TextEditingController(text: user.name);

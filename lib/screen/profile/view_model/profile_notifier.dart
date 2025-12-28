@@ -2,6 +2,8 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:person_app/const/colors.dart';
+import 'package:person_app/const/common_widgets.dart';
 import 'package:person_app/const/urls.dart';
 import 'package:person_app/screen/profile/model/profile_model.dart';
 
@@ -11,6 +13,7 @@ class ProfileNotifier extends ChangeNotifier {
   bool isUserDataLoading = false;
   bool isUsersEmpty = false;
   Future<void> getUsersData({required BuildContext context}) async {
+    print('getuser');
     try {
       isUserDataLoading = true;
       usersList.add(UserModel());
@@ -24,7 +27,7 @@ class ProfileNotifier extends ChangeNotifier {
         List<dynamic> body = jsonDecode(response.body);
         final users = body.map((dynamic item) => UserModel.fromJson(item)).toList();
         usersList.addAll(users);
-
+        usersList.addAll(tempUsersList);
         if (usersList.isEmpty == true) {
           isUsersEmpty = true;
         } else {
@@ -73,5 +76,15 @@ class ProfileNotifier extends ChangeNotifier {
       }).toList();
     }
     notifyListeners();
+  }
+
+  List<UserModel> tempUsersList = [];
+  Future<void> addToList(UserModel user, BuildContext context) async {
+    try {
+      tempUsersList.add(user);
+      toast(context, title: 'Profile Added successFully', backgroundColor: AppColor.green);
+    } catch (e) {
+      print('error on adding $e');
+    }
   }
 }

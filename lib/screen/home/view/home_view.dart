@@ -23,7 +23,9 @@ class HomeView extends StatefulWidget {
 class _HomeViewState extends State<HomeView> {
   @override
   void initState() {
-    context.read<HomeNotifier>().getUsersData(context: context);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<HomeNotifier>().getUsersData(context: context);
+    });
     super.initState();
   }
 

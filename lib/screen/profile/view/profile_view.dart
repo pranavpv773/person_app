@@ -25,7 +25,9 @@ class ProfileView extends StatefulWidget {
 class _ProfileViewState extends State<ProfileView> {
   @override
   void initState() {
-    context.read<ProfileNotifier>().getUsersData(context: context);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<ProfileNotifier>().getUsersData(context: context);
+    });
     super.initState();
   }
 
