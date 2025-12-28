@@ -1,16 +1,44 @@
-# person_app
+# Person App 🚀
 
-A new Flutter project.
+A modern, responsive Flutter application designed for managing user profiles. This project demonstrates high-performance cross-platform development with a focus on clean architecture, responsive design, and real-time API integration.
 
-## Getting Started
+## 📱 Features
 
-This project is a starting point for a Flutter application.
+- **Responsive Navigation:**
+  - **Mobile:** Adaptive Top AppBar + Bottom Navigation Bar.
+  - **Tablet/Web:** Collapsible Sidebar  for optimized screen usage.
+- **Dynamic User Directory:**
+  - Fetches real-time data from the [JSONPlaceholder API](https://jsonplaceholder.typicode.com/users).
+  - Multi-parameter search: Filter users by **Name**, **Username**, or **Company Name**.
+  - Optimized Search: Only searches within the first 5 records (custom constraint).
+- **Profile Management:**
+  - Dynamic Routing using `go_router` (`/profile/:id`).
+  - Full details view (Email, Phone, Address, Company).
+  - Responsive Edit Form with field validation (Email, Phone length, Required fields).
+- **Web-First Optimization:**
+  - Syncs app state with the browser address bar.
+  - Responsive GridView for desktop views.
 
-A few resources to get you started if this is your first Flutter project:
+## 🛠️ Tech Stack
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+- **Framework:** [Flutter](https://flutter.dev/)
+- **Language:** [Dart](https://dart.dev/)
+- **State Management:** Provider
+- **Navigation:** GoRouter
+- **HTTP Client:** Http package
+- **Icons/Assets:** SVG integration for categories
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## 🚀 Getting Started
+
+### Prerequisites
+
+- Flutter SDK (Latest Stable Version)
+- Android Studio / Xcode / VS Code
+- Chrome (for web testing)
+
+### Installation
+
+1. **Clone the repository:**
+   ```bash
+   git clone [https://github.com/pranavpv773/person_app.git](https://github.com/pranavpv773/person_app.git)
+   cd person_app

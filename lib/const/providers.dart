@@ -1,8 +1,8 @@
-import 'package:person_app/screen/app/global_section/view_model/bottom_main_controller.dart';
-import 'package:person_app/screen/app/home/view_model/home_notifier.dart';
-import 'package:person_app/screen/app/profile/view_model/profile_notifier.dart';
-import 'package:person_app/screen/app/profile_add/view_model/add_profile_notifier.dart';
-import 'package:person_app/screen/app/profile_detail/view_model/profile_details_notifier.dart';
+import 'package:person_app/screen/global_section/view_model/bottom_main_controller.dart';
+import 'package:person_app/screen/home/view_model/home_notifier.dart';
+import 'package:person_app/screen/profile/view_model/profile_notifier.dart';
+import 'package:person_app/screen/profile_add/view_model/add_profile_notifier.dart';
+import 'package:person_app/screen/profile_detail/view_model/profile_details_notifier.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
 
