@@ -5,6 +5,7 @@ import 'package:person_app/const/app_images.dart';
 import 'package:person_app/const/colors.dart';
 import 'package:person_app/const/common_widgets.dart';
 import 'package:person_app/const/sized_box.dart';
+import 'package:person_app/const/svg_images.dart';
 
 class AppBarWidget extends StatelessWidget {
   const AppBarWidget({super.key, required this.isMobile, required this.isTablet, required this.nkey});
@@ -28,7 +29,6 @@ class AppBarWidget extends StatelessWidget {
               padding: const EdgeInsets.all(8.0),
               child: GestureDetector(
                 onTap: () {
-                  print("object");
                   nkey.currentState!.openDrawer();
                 },
                 child: assetImageWidget(image: AppImages.logo),
@@ -44,14 +44,9 @@ class AppBarWidget extends StatelessWidget {
             )
           : null,
       actions: [
-        SvgPicture.asset('assets/images/notification-bing-svgrepo-com.svg'),
+        SvgPicture.asset(SvgCodes.notificationSvg),
         SizeBoxV(20),
-        CircleAvatar(
-          radius: 18,
-          backgroundImage: NetworkImage(
-            'https://ik.imagekit.io/eatplek/marketing/banners/0d23acbc534e0456e81b0d3499a4086a_4-Db6kdEQD.png',
-          ),
-        ),
+        CircleAvatar(radius: 18, backgroundImage: NetworkImage(AppImages.appBarProfileImg)),
       ],
     );
   }

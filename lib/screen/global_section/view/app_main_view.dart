@@ -171,22 +171,24 @@ class AppMainView extends StatelessWidget {
           : null,
       backgroundColor: Colors.white,
       body: Consumer<GlobalSectionNotifier>(
-        builder: (context, notifier, child) {
+        builder: (context, notifier, widget) {
           return Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               if (!isMobile && !isTablet) const Expanded(flex: 1, child: SideMenu()),
-
-              Expanded(
-                flex: 5,
-                child: notifier.selectedIndex == 0
-                    ? notifier.bottomBarItems[0]
-                    : notifier.selectedIndex == 1
-                    ? notifier.bottomBarItems[1]
-                    : notifier.selectedIndex == 2
-                    ? notifier.bottomBarItems[2]
-                    : notifier.bottomBarItems[3],
-              ),
+              Expanded(flex: 5, child: child),
+              // isMobile && isTablet
+              //     ? child
+              //     : Expanded(
+              //         flex: 5,
+              //         child: notifier.selectedIndex == 0
+              //             ? notifier.bottomBarItems[0]
+              //             : notifier.selectedIndex == 1
+              //             ? notifier.bottomBarItems[1]
+              //             : notifier.selectedIndex == 2
+              //             ? notifier.bottomBarItems[2]
+              //             : notifier.bottomBarItems[3],
+              //       ),
             ],
           );
         },

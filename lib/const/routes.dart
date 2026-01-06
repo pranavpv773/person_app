@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:person_app/screen/global_section/view/app_main_view.dart';
+import 'package:person_app/screen/global_section/view_model/bottom_main_controller.dart';
 import 'package:person_app/screen/home/view/home_view.dart';
 import 'package:person_app/screen/profile/view/profile_view.dart';
 import 'package:person_app/screen/profile_add/view/profile_add_view.dart';
 import 'package:person_app/screen/profile_detail/view/profile_details_view.dart';
+import 'package:provider/provider.dart';
 
 final GlobalKey<NavigatorState> rootNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'root');
 final GlobalKey<NavigatorState> shellNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'shell');
@@ -27,7 +29,12 @@ class Routes {
         navigatorKey: shellNavigatorKey,
         parentNavigatorKey: rootNavigatorKey,
         builder: (BuildContext context, GoRouterState state, Widget child) {
-          return AppMainView(child: child);
+          print(child);
+          return Consumer<GlobalSectionNotifier>(
+            builder: (context, notifier, widget) {
+              return AppMainView(child: notifier.bottomBarItems[notifier.selectedIndex]);
+            },
+          );
         },
         routes: [
           GoRoute(name: homeView, path: homeView, builder: (context, state) => const HomeView()),

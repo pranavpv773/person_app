@@ -1,7 +1,5 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
+import 'package:person_app/const/server_client.dart';
 import 'package:person_app/const/urls.dart';
 import 'package:person_app/screen/profile/model/profile_model.dart';
 
@@ -20,12 +18,12 @@ class HomeNotifier extends ChangeNotifier {
       displayUsers.add(UserModel());
       displayUsers.add(UserModel());
 
-      final response = await http.get(Uri.parse(Urls.usersUrl));
-      if (response.statusCode == 200) {
-        displayUsers.clear();
-        List<dynamic> body = jsonDecode(response.body);
-        final users = body.map((dynamic item) => UserModel.fromJson(item)).toList();
+      final response = await ServerClient.get(Urls.usersUrl);
+      if (response.first == 200) {
+        List<dynamic> body = response.last;
+        final users = body.map((dynamic item) => UserModel.fromJson(item as Map<String, dynamic>)).toList();
         if (users.length > 5) {
+          displayUsers.clear();
           usersList = users.take(5).toList();
           displayUsers = users.take(5).toList();
         } else {
